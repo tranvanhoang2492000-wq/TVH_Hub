@@ -106,7 +106,7 @@ function Library:Notify(title, message, duration)
     local NotifTitle = Instance.new("TextLabel")
     NotifTitle.Size = UDim2.new(1, -16, 0, 16)
     NotifTitle.Position = UDim2.new(0, 8, 0, 4)
-    NotifTitle.Text = title or "Thông báo"
+    NotifTitle.Text = title or "Thông Báo"
     NotifTitle.Font = Enum.Font.GothamBold
     NotifTitle.TextSize = 11
     NotifTitle.TextColor3 = THEME.Accent
@@ -252,7 +252,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
     CloseBtn.Size = UDim2.new(0, 24, 0, 24)
     CloseBtn.Position = UDim2.new(1, -30, 0.5, -12)
     CloseBtn.BackgroundColor3 = THEME.BtnClose
-    CloseBtn.Text = "✕"
+    CloseBtn.Text = "X"
     CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
     CloseBtn.Font = Enum.Font.GothamBold
     CloseBtn.TextSize = 12
