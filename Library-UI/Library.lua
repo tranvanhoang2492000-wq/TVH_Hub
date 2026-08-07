@@ -281,7 +281,6 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
     MinimizeCorner.CornerRadius = UDim.new(0, 6)
     MinimizeCorner.Parent = MinimizeBtn
 
-    -- Hộp thoại xác nhận thoát (Confirm Modal)
     local ConfirmOverlay = Instance.new("Frame")
     ConfirmOverlay.Size = UDim2.new(1, 0, 1, 0)
     ConfirmOverlay.BackgroundColor3 = THEME.Overlay
@@ -309,7 +308,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
     local ConfirmTitle = Instance.new("TextLabel")
     ConfirmTitle.Size = UDim2.new(1, 0, 0, 30)
     ConfirmTitle.Position = UDim2.new(0, 0, 0, 10)
-    ConfirmTitle.Text = "Xác nhận đóng Hub?"
+    ConfirmTitle.Text = "Xác nhận đóng toàn bộ Window?"
     ConfirmTitle.Font = Enum.Font.GothamBold
     ConfirmTitle.TextSize = 13
     ConfirmTitle.TextColor3 = THEME.TextMain
@@ -332,7 +331,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
     YesBtn.Size = UDim2.new(0, 100, 0, 28)
     YesBtn.Position = UDim2.new(0, 20, 1, -38)
     YesBtn.BackgroundColor3 = THEME.BtnClose
-    YesBtn.Text = "Đồng ý"
+    YesBtn.Text = "Đồng Ý"
     YesBtn.Font = Enum.Font.GothamBold
     YesBtn.TextSize = 11
     YesBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
