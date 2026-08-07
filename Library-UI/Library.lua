@@ -18,6 +18,7 @@ local THEME = {
     Border = Color3.fromRGB(48, 38, 72),
     Overlay = Color3.fromRGB(6, 4, 10),
     BtnMinimize = Color3.fromRGB(255, 255, 255),
+    BtnMaximize = Color3.fromRGB(255, 255, 255),
     BtnClose = Color3.fromRGB(235, 55, 75)
 }
 
@@ -106,7 +107,7 @@ function Library:Notify(title, message, duration)
     local NotifTitle = Instance.new("TextLabel")
     NotifTitle.Size = UDim2.new(1, -16, 0, 16)
     NotifTitle.Position = UDim2.new(0, 8, 0, 4)
-    NotifTitle.Text = title or "Thông Báo"
+    NotifTitle.Text = title or "Thông báo"
     NotifTitle.Font = Enum.Font.GothamBold
     NotifTitle.TextSize = 11
     NotifTitle.TextColor3 = THEME.Accent
@@ -209,7 +210,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
     MainFrame.Position = UDim2.new(0.5, -250, 0.5, -160)
     MainFrame.BackgroundColor3 = THEME.Background
     MainFrame.BorderSizePixel = 0
-    MainFrame.ClipsDescendants = true
+    MainFrame.ClipsDescendants = false
     MainFrame.Parent = ScreenGui
 
     local MainCorner = Instance.new("UICorner")
@@ -255,45 +256,94 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
     CloseBtn.Text = "X"
     CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
     CloseBtn.Font = Enum.Font.GothamBold
-    CloseBtn.TextSize = 12
+    CloseBtn.TextSize = 13
+    CloseBtn.TextXAlignment = Enum.TextXAlignment.Center
+    CloseBtn.TextYAlignment = Enum.TextYAlignment.Center
     CloseBtn.AutoButtonColor = false
-    CloseBtn.ZIndex = 3
+    CloseBtn.ZIndex = 100
     CloseBtn.Parent = Header
 
     local CloseCorner = Instance.new("UICorner")
     CloseCorner.CornerRadius = UDim.new(0, 6)
     CloseCorner.Parent = CloseBtn
 
+    local MaximizeBtn = Instance.new("TextButton")
+    MaximizeBtn.Name = "MaximizeBtn"
+    MaximizeBtn.Size = UDim2.new(0, 24, 0, 24)
+    MaximizeBtn.Position = UDim2.new(1, -58, 0.5, -12)
+    MaximizeBtn.BackgroundColor3 = THEME.BtnMaximize
+    MaximizeBtn.Text = "□"
+    MaximizeBtn.TextColor3 = Color3.fromRGB(20, 20, 20)
+    MaximizeBtn.Font = Enum.Font.GothamBold
+    MaximizeBtn.TextSize = 14
+    MaximizeBtn.TextXAlignment = Enum.TextXAlignment.Center
+    MaximizeBtn.TextYAlignment = Enum.TextYAlignment.Center
+    MaximizeBtn.AutoButtonColor = false
+    MaximizeBtn.ZIndex = 100
+    MaximizeBtn.Parent = Header
+
+    local MaximizeCorner = Instance.new("UICorner")
+    MaximizeCorner.CornerRadius = UDim.new(0, 6)
+    MaximizeCorner.Parent = MaximizeBtn
+
+
     local MinimizeBtn = Instance.new("TextButton")
     MinimizeBtn.Name = "MinimizeBtn"
     MinimizeBtn.Size = UDim2.new(0, 24, 0, 24)
-    MinimizeBtn.Position = UDim2.new(1, -58, 0.5, -12)
+    MinimizeBtn.Position = UDim2.new(1, -86, 0.5, -12)
     MinimizeBtn.BackgroundColor3 = THEME.BtnMinimize
-    MinimizeBtn.Text = "—"
+    MinimizeBtn.Text = "-"
     MinimizeBtn.TextColor3 = Color3.fromRGB(20, 20, 20)
     MinimizeBtn.Font = Enum.Font.GothamBold
-    MinimizeBtn.TextSize = 12
+    MinimizeBtn.TextSize = 16
+    MinimizeBtn.TextXAlignment = Enum.TextXAlignment.Center
+    MinimizeBtn.TextYAlignment = Enum.TextYAlignment.Center
     MinimizeBtn.AutoButtonColor = false
-    MinimizeBtn.ZIndex = 3
+    MinimizeBtn.ZIndex = 100
     MinimizeBtn.Parent = Header
 
     local MinimizeCorner = Instance.new("UICorner")
     MinimizeCorner.CornerRadius = UDim.new(0, 6)
     MinimizeCorner.Parent = MinimizeBtn
 
+
+    local isMaximized = false
+    local normalSize = MainFrame.Size
+    local normalPosition = MainFrame.Position
+
+    MaximizeBtn.MouseButton1Click:Connect(function()
+        isMaximized = not isMaximized
+        if isMaximized then
+            normalSize = MainFrame.Size
+            normalPosition = MainFrame.Position
+
+            MaximizeBtn.Text = "❐"
+            TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                Size = UDim2.new(1, -20, 1, -20),
+                Position = UDim2.new(0, 10, 0, 10)
+            }):Play()
+        else
+            MaximizeBtn.Text = "□"
+            TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                Size = normalSize,
+                Position = normalPosition
+            }):Play()
+        end
+    end)
+
     local ConfirmOverlay = Instance.new("Frame")
     ConfirmOverlay.Size = UDim2.new(1, 0, 1, 0)
     ConfirmOverlay.BackgroundColor3 = THEME.Overlay
     ConfirmOverlay.BackgroundTransparency = 0.4
     ConfirmOverlay.Visible = false
-    ConfirmOverlay.ZIndex = 10
+    ConfirmOverlay.ZIndex = 200
     ConfirmOverlay.Parent = MainFrame
 
     local ConfirmBox = Instance.new("Frame")
     ConfirmBox.Size = UDim2.new(0, 260, 0, 120)
     ConfirmBox.Position = UDim2.new(0.5, -130, 0.5, -60)
     ConfirmBox.BackgroundColor3 = THEME.Card
-    ConfirmBox.ZIndex = 11
+    ConfirmBox.ZIndex = 201
     ConfirmBox.Parent = ConfirmOverlay
 
     local ConfirmCorner = Instance.new("UICorner")
@@ -308,12 +358,12 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
     local ConfirmTitle = Instance.new("TextLabel")
     ConfirmTitle.Size = UDim2.new(1, 0, 0, 30)
     ConfirmTitle.Position = UDim2.new(0, 0, 0, 10)
-    ConfirmTitle.Text = "Xác nhận đóng toàn bộ Window?"
+    ConfirmTitle.Text = "Xác nhận đóng Window?"
     ConfirmTitle.Font = Enum.Font.GothamBold
     ConfirmTitle.TextSize = 13
     ConfirmTitle.TextColor3 = THEME.TextMain
     ConfirmTitle.BackgroundTransparency = 1
-    ConfirmTitle.ZIndex = 12
+    ConfirmTitle.ZIndex = 202
     ConfirmTitle.Parent = ConfirmBox
 
     local ConfirmSub = Instance.new("TextLabel")
@@ -324,18 +374,18 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
     ConfirmSub.TextSize = 10
     ConfirmSub.TextColor3 = THEME.TextDark
     ConfirmSub.BackgroundTransparency = 1
-    ConfirmSub.ZIndex = 12
+    ConfirmSub.ZIndex = 202
     ConfirmSub.Parent = ConfirmBox
 
     local YesBtn = Instance.new("TextButton")
     YesBtn.Size = UDim2.new(0, 100, 0, 28)
     YesBtn.Position = UDim2.new(0, 20, 1, -38)
     YesBtn.BackgroundColor3 = THEME.BtnClose
-    YesBtn.Text = "Đồng Ý"
+    YesBtn.Text = "Đồng ý"
     YesBtn.Font = Enum.Font.GothamBold
     YesBtn.TextSize = 11
     YesBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    YesBtn.ZIndex = 12
+    YesBtn.ZIndex = 202
     YesBtn.Parent = ConfirmBox
 
     local YesCorner = Instance.new("UICorner")
@@ -350,7 +400,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
     NoBtn.Font = Enum.Font.GothamBold
     NoBtn.TextSize = 11
     NoBtn.TextColor3 = THEME.TextMain
-    NoBtn.ZIndex = 12
+    NoBtn.ZIndex = 202
     NoBtn.Parent = ConfirmBox
 
     local NoCorner = Instance.new("UICorner")
@@ -374,9 +424,11 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
         isOpen = not isOpen
         if isOpen then
             MainFrame.Visible = true
+            local targetSize = isMaximized and UDim2.new(1, -20, 1, -20) or normalSize
+            local targetPos = isMaximized and UDim2.new(0, 10, 0, 10) or normalPosition
             TweenService:Create(MainFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-                Size = UDim2.new(0, 500, 0, 320),
-                Position = UDim2.new(0.5, -250, 0.5, -160)
+                Size = targetSize,
+                Position = targetPos
             }):Play()
         else
             local anim = TweenService:Create(MainFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
@@ -507,7 +559,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
         function Elements:CreateButton(btnText, callback)
             callback = callback or function() end
             local ButtonFrame = Instance.new("TextButton")
-            ButtonFrame.Size = UDim2.new(0, 340, 0, 32)
+            ButtonFrame.Size = UDim2.new(1, -20, 0, 32)
             ButtonFrame.BackgroundColor3 = THEME.Card
             ButtonFrame.Text = btnText
             ButtonFrame.Font = Enum.Font.GothamMedium
@@ -536,7 +588,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
             end
 
             local ToggleFrame = Instance.new("Frame")
-            ToggleFrame.Size = UDim2.new(0, 340, 0, 32)
+            ToggleFrame.Size = UDim2.new(1, -20, 0, 32)
             ToggleFrame.BackgroundColor3 = THEME.Card
             ToggleFrame.Parent = TabPage
 
@@ -545,7 +597,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
             Corner.Parent = ToggleFrame
 
             local Title = Instance.new("TextLabel")
-            Title.Size = UDim2.new(0, 220, 1, 0)
+            Title.Size = UDim2.new(1, -60, 1, 0)
             Title.Position = UDim2.new(0, 10, 0, 0)
             Title.Text = toggleText
             Title.Font = Enum.Font.GothamMedium
@@ -607,7 +659,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
             end
 
             local SliderFrame = Instance.new("Frame")
-            SliderFrame.Size = UDim2.new(0, 340, 0, 42)
+            SliderFrame.Size = UDim2.new(1, -20, 0, 42)
             SliderFrame.BackgroundColor3 = THEME.Card
             SliderFrame.Parent = TabPage
 
@@ -616,7 +668,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
             Corner.Parent = SliderFrame
 
             local Title = Instance.new("TextLabel")
-            Title.Size = UDim2.new(0, 180, 0, 20)
+            Title.Size = UDim2.new(1, -70, 0, 20)
             Title.Position = UDim2.new(0, 10, 0, 2)
             Title.Text = sliderText
             Title.Font = Enum.Font.GothamMedium
@@ -705,7 +757,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
             local dropped = false
 
             local DropFrame = Instance.new("Frame")
-            DropFrame.Size = UDim2.new(0, 340, 0, 32)
+            DropFrame.Size = UDim2.new(1, -20, 0, 32)
             DropFrame.BackgroundColor3 = THEME.Card
             DropFrame.ClipsDescendants = true
             DropFrame.Parent = TabPage
@@ -715,7 +767,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
             Corner.Parent = DropFrame
 
             local Title = Instance.new("TextLabel")
-            Title.Size = UDim2.new(0, 160, 0, 32)
+            Title.Size = UDim2.new(1, -140, 0, 32)
             Title.Position = UDim2.new(0, 10, 0, 0)
             Title.Text = dropdownText
             Title.Font = Enum.Font.GothamMedium
@@ -729,7 +781,7 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
             SelectedLabel.Size = UDim2.new(0, 120, 0, 22)
             SelectedLabel.Position = UDim2.new(1, -128, 0, 5)
             SelectedLabel.BackgroundColor3 = THEME.Header
-            SelectedLabel.Text = selected .. "  ▼"
+            SelectedLabel.Text = selected .. "  v"
             SelectedLabel.Font = Enum.Font.Gotham
             SelectedLabel.TextSize = 10
             SelectedLabel.TextColor3 = THEME.Accent
@@ -766,9 +818,9 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
 
                 OptBtn.MouseButton1Click:Connect(function()
                     selected = opt
-                    SelectedLabel.Text = selected .. "  ▼"
+                    SelectedLabel.Text = selected .. "  v"
                     dropped = false
-                    TweenService:Create(DropFrame, TweenInfo.new(0.15), {Size = UDim2.new(0, 340, 0, 32)}):Play()
+                    TweenService:Create(DropFrame, TweenInfo.new(0.15), {Size = UDim2.new(1, -20, 0, 32)}):Play()
                     
                     ConfigData[dropdownText] = selected
                     SaveConfig()
@@ -782,14 +834,14 @@ function Library:CreateWindow(hubTitle, iconAssetId, configFileName)
             SelectedLabel.MouseButton1Click:Connect(function()
                 dropped = not dropped
                 local targetHeight = dropped and (38 + (#options * 25)) or 32
-                SelectedLabel.Text = selected .. (dropped and "  ▲" or "  ▼")
-                TweenService:Create(DropFrame, TweenInfo.new(0.15), {Size = UDim2.new(0, 340, 0, targetHeight)}):Play()
+                SelectedLabel.Text = selected .. (dropped and "  ^" or "  v")
+                TweenService:Create(DropFrame, TweenInfo.new(0.15), {Size = UDim2.new(1, -20, 0, targetHeight)}):Play()
             end)
         end
 
         function Elements:CreateSection(sectionName, sectionIconId)
             local SecFrame = Instance.new("Frame")
-            SecFrame.Size = UDim2.new(0, 340, 0, 24)
+            SecFrame.Size = UDim2.new(1, -20, 0, 24)
             SecFrame.BackgroundTransparency = 1
             SecFrame.Parent = TabPage
 
