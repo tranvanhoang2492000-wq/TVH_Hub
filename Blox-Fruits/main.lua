@@ -124,7 +124,9 @@ for _, container in ipairs(targets) do
         end
     end
 end
-     
+   
+loadstring(game:HttpGet("https://raw.githubusercontent.com/tranvanhoang2492000-wq/TVH_Hub/refs/heads/main/Blox-Fruits/FastAttack.lua"))()
+
 MainTab:CreateSection("Farm Chính", "rbxassetid://6031068421")
 
 MainTab:CreateDropdown("Chọn Vũ Khí", {"Melee", "Sword", "Blox Fruit"}, "Melee", function(selected)
