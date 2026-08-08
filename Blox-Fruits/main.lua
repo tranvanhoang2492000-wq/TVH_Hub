@@ -129,8 +129,15 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/tranvanhoang2492000-w
 
 MainTab:CreateSection("Farm Chính", "rbxassetid://6031068421")
 
+getgenv().SelectWeapon = "Melee"
+
 MainTab:CreateDropdown("Chọn Vũ Khí", {"Melee", "Sword", "Blox Fruit"}, "Melee", function(selected)
+    getgenv().SelectWeapon = selected
     print("Vũ khí đang chọn:", selected)
+
+    if selected == "Blox Fruit" then
+        Library:Notify("Cảnh Báo Chọn Mục Trái", "Mục Blox Fruit chỉ dùng được cho Trái Light và Trái Băng!", 5)
+    end
 end)
 
 MainTab:CreateToggle("Auto Farm Level", false, function(state)
