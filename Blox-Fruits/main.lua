@@ -51,7 +51,7 @@ task.spawn(function()
     end)
 end)
 
-local decalsYeeted = false
+local decalsYeeted = true
 local Workspace = game:GetService("Workspace")
 local Lighting = game:GetService("Lighting")
 local Terrain = Workspace.Terrain
@@ -94,20 +94,16 @@ for _, effect in Lighting:GetChildren() do
 end
 
 task.spawn(function()
-    while true do
-        task.wait(1)
+    while task.wait(1) do
         pcall(function()
             local map = game:GetService("Workspace"):FindFirstChild("Map")
             local water = map and map:FindFirstChild("WaterBase-Plane")
             
             if water then
                 local targetSize = Vector3.new(1000, 112, 1000)
-                
                 if water.Size ~= targetSize then
                     water.Size = targetSize
-                    
                     water.CanCollide = true 
-                    
                     water.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 1, 0, 1)
                 end
             end
@@ -116,7 +112,6 @@ task.spawn(function()
 end)
 
 local targets = {game.Workspace, game.ReplicatedStorage}
-
 for _, container in ipairs(targets) do
     for _, v in ipairs(container:GetDescendants()) do
         if v.Name == "Lava" then
@@ -124,7 +119,7 @@ for _, container in ipairs(targets) do
         end
     end
 end
-   
+
 loadstring(game:HttpGet("https://raw.githubusercontent.com/tranvanhoang2492000-wq/TVH_Hub/refs/heads/main/Blox-Fruits/FastAttack.lua"))()
 
 MainTab:CreateSection("Farm Chính", "rbxassetid://6031068421")
@@ -146,7 +141,11 @@ end)
 
 SettingTab:CreateSection("Cài Đặt", "rbxassetid://6031280882")
 
+getgenv().CurrentWalkSpeed = 16
+getgenv().CurrentJumpPower = 50
+
 SettingTab:CreateSlider("Tốc Độ Chạy (Walk Speed)", 16, 200, 16, function(value)
+    getgenv().CurrentWalkSpeed = value
     local char = game.Players.LocalPlayer.Character
     if char and char:FindFirstChild("Humanoid") then
         char.Humanoid.WalkSpeed = value
@@ -154,6 +153,7 @@ SettingTab:CreateSlider("Tốc Độ Chạy (Walk Speed)", 16, 200, 16, function
 end)
 
 SettingTab:CreateSlider("Độ Nhảy Cao (Jump Power)", 50, 300, 50, function(value)
+    getgenv().CurrentJumpPower = value
     local char = game.Players.LocalPlayer.Character
     if char and char:FindFirstChild("Humanoid") then
         char.Humanoid.JumpPower = value
@@ -163,8 +163,8 @@ end)
 game.Players.LocalPlayer.CharacterAdded:Connect(function(char)
     local humanoid = char:WaitForChild("Humanoid", 10)
     if humanoid then
-        humanoid.WalkSpeed = CurrentWalkSpeed
-        humanoid.JumpPower = CurrentJumpPower
+        humanoid.WalkSpeed = getgenv().CurrentWalkSpeed
+        humanoid.JumpPower = getgenv().CurrentJumpPower
     end
 end)
 
