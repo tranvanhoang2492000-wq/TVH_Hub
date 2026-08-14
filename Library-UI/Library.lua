@@ -410,6 +410,7 @@ function Library:CreateTab(name, iconId)
     Indicator.BackgroundColor3 = self.Options.AccentColor
     Indicator.BackgroundTransparency = 1
     Instance.new("UICorner", Indicator).CornerRadius = UDim.new(1, 0)
+    table.insert(self.ThemeObjects.Fills, Indicator)
 
     local Page = Instance.new("ScrollingFrame")
     Page.Size = UDim2.new(1, 0, 1, 0)
@@ -440,7 +441,9 @@ function Library:CreateTab(name, iconId)
             t.Page.Visible = false
         end
         Page.Visible = true
-        selfLib.PageTitle.Text = name
+        if selfLib.PageTitle then
+            selfLib.PageTitle.Text = name
+        end
         TweenService:Create(Btn, TweenInfo.new(0.2), {BackgroundTransparency = 0, BackgroundColor3 = Color3.fromRGB(28, 32, 48)}):Play()
         TweenService:Create(Icon, TweenInfo.new(0.2), {ImageColor3 = selfLib.Options.AccentColor}):Play()
         TweenService:Create(Label, TweenInfo.new(0.2), {TextColor3 = selfLib.Options.AccentColor}):Play()
