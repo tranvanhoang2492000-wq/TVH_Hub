@@ -17,18 +17,30 @@ function Library.new(config)
     config = config or {}
     
     self.HubName = config.Name or "TVH Hub"
+    self.SubName = config.SubName or "Ultimate Version"
     self.ConfigFile = config.ConfigFile or "TVH_Config.json"
+    
+    self.AccentObjects = {
+        Strokes = {},
+        Labels = {},
+        ImageLabels = {},
+        Buttons = {},
+        Fills = {}
+    }
     
     local rawOptions = {}
     
     self.Options = setmetatable({}, {
         __index = rawOptions,
-        __newindex = t, function(t, key, value)
+        __newindex = function(t, key, value)
             rawset(t, key, value)
             rawOptions[key] = value
             self:SaveConfig()
         end
     })
+    
+    self.Options.AccentColor = config.AccentColor or Color3.fromRGB(0, 220, 255)
+    self.Options.ToggleKey = Enum.KeyCode.RightControl
     
     if readfile and isfile and isfile(self.ConfigFile) then
         pcall(function()
