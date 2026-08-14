@@ -17,7 +17,7 @@ function Library.new(config)
     config = config or {}
     
     self.HubName = config.Name or "TVH Hub"
-    self.SubName = config.SubName or "Ultimate Version"
+    self.SubName = config.SubName or "Version : 1.0"
     self.ConfigFile = config.ConfigFile or "TVH_Config.json"
     
     self.AccentObjects = {
@@ -27,6 +27,8 @@ function Library.new(config)
         Buttons = {},
         Fills = {}
     }
+    
+    self.TabBtns = {}
     
     local rawOptions = {}
     
