@@ -106,6 +106,7 @@ function Library:UpdateAccentColor(newColor)
     for _, obj in ipairs(self.AccentObjects.Labels) do pcall(function() obj.TextColor3 = newColor end) end
     for _, obj in ipairs(self.AccentObjects.ImageLabels) do pcall(function() obj.ImageColor3 = newColor end) end
     for _, obj in ipairs(self.AccentObjects.Buttons) do pcall(function() obj.TextColor3 = newColor end) end
+    for _, obj in ipairs(self.AccentObjects.Fills) do pcall(function() obj.BackgroundColor3 = newColor end) end
     self:SaveConfig()
 end
 
