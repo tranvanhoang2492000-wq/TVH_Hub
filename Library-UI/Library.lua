@@ -423,7 +423,7 @@ function Library:CreateTab(name, iconId)
     Indicator.BackgroundColor3 = self.Options.AccentColor
     Indicator.BackgroundTransparency = 1
     Instance.new("UICorner", Indicator).CornerRadius = UDim.new(1, 0)
-    table.insert(self.ThemeObjects.Fills, Indicator)
+    table.insert(self.AccentObjects.Fills, Indicator)
 
     local Page = Instance.new("ScrollingFrame")
     Page.Size = UDim2.new(1, 0, 1, 0)
